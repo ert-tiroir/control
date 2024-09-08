@@ -5,6 +5,8 @@ from types import ModuleType
 from typing import List
 from control.utils.singleton import Singleton
 
+from control.config import settings
+
 class ApplicationManager(metaclass=Singleton):
     applications: "List[Application]"
     def __init__(self) -> None:
@@ -46,10 +48,9 @@ class Application(metaclass=Singleton):
         return self.__path
 
 def init_applications ():
-    from control.config.include import ENABLED_APPS
-
     manager = ApplicationManager()
-    for application in ENABLED_APPS:
+    
+    for application in settings.ENABLED_APPS:
         manager.bind(application)
         importlib.import_module( application + ".app" )
 
