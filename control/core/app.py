@@ -31,6 +31,8 @@ class Application(metaclass=Singleton):
         self.__path = path
     def __init_subclass__(cls) -> None:
         ApplicationManager().add_application(cls)
+    def prepare_application (self):
+        pass
     def init_application (self):
         pass
     def stop_application (self):
@@ -47,7 +49,7 @@ class Application(metaclass=Singleton):
     def path (self):
         return self.__path
 
-def init_applications ():
+def prepare_applications ():
     manager = ApplicationManager()
     
     for application in settings.ENABLED_APPS:
@@ -55,6 +57,11 @@ def init_applications ():
         importlib.import_module( application + ".app" )
 
         manager.unbind()
+    for application in manager.applications:
+        application.prepare_application()
+def init_applications ():
+    manager = ApplicationManager()
+    
     for application in manager.applications:
         application.init_application()
 def stop_applications ():

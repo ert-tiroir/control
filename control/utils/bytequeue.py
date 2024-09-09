@@ -7,6 +7,8 @@ class ByteQueue:
     
     def put (self, bytes):
         self._buffer.extend(bytes)
+    def peek (self, size: int):
+        return self._buffer[self.offset:self.offset + size]
     def pop (self, size: int):
         data = self._buffer[self.offset:self.offset + size]
         self.offset += size
