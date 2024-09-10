@@ -1,10 +1,9 @@
 
-ENABLED_APPS = [
-    'control.contrib.webc'
-]
+ENABLED_APPS = []
 
-# either "avionics" or "ground"
-# determines whether to run the control apps in av or gnd mode
-# av is usually setting up sensors and sending the data through phyc,
-# while gnd is usually taking data from phyc and forwarding it to netc.
-CONTROLLER_TYPE = "avionics"
+NEXT_ON_CONTROLLER_CHAIN = lambda *args, **kwargs: 0
+NEXT_ON_MODEL_CHAIN      = lambda *args, **kwargs: 0
+
+SENSORS_AUTOSTART = False
+
+SENSORS_LIST = []

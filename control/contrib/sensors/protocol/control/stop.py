@@ -2,13 +2,13 @@
 from control.contrib.protocol.fields.integer import IntegerField
 from control.contrib.protocol.fields.packet  import MultiField
 
-class StartSensorPacket(MultiField):
+class StopSensorPacket(MultiField):
     control_salt = IntegerField()
     control_key  = IntegerField()
 
-def start_sensors (packet: StartSensorPacket):
+def stop_sensors (packet: StopSensorPacket):
     # TODO validate controls
 
     from control.contrib.sensors.app import SensorsApp
     
-    SensorsApp().on_start(packet)
+    SensorsApp().on_stop(packet)

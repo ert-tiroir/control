@@ -8,9 +8,11 @@ class AbstractDevice:
         assert False, "Not implemented"
     def get_name (self) -> str:
         assert False, "Not implemented"
-    def get_packet_type (self) -> Type[MultiField]:
+    @staticmethod
+    def get_packet_type () -> Type[MultiField]:
         assert False, "Not implemented"
-    def get_data_format (self) -> List[str]:
+    @staticmethod
+    def get_data_format () -> List[str]:
         assert False, "Not implemented"
     def read_device_packet (self) -> MultiField:
         assert False, "Not implemented"
