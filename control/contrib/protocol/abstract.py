@@ -27,7 +27,7 @@ class AbstractProtocolApp:
                 print(f"WARNING could not find {self.__var_name__} in {application.path}.protocol")
                 continue
 
-            protocol.extend(prt_module.packets)
+            protocol.extend(getattr(prt_module, self.__var_name__))
 
         self.protocol = protocol
         if len(protocol) == 0:
@@ -60,12 +60,15 @@ class AbstractProtocolApp:
         self.pid_field.put(_packet_index, header)
 
         buffer = header.getvalue() + data
+        print("Sending ", buffer)
         self.send_buffer.put(buffer)
     def check_receive (self):
         while True:
+            print(self.recv_buffer.peek(8))
             sze_buffer = BytesIO(self.recv_buffer.peek(8))
 
             sze = self.sze_field.parse(sze_buffer)
+            print(sze)
             if sze + 8 > len(self.recv_buffer): return # There is no more data
 
             self.recv_buffer.pop(8)
@@ -73,8 +76,10 @@ class AbstractProtocolApp:
             header = BytesIO( self.recv_buffer.pop( self.pid_field.length ) )
             
             pid = self.pid_field.parse( header )
+            print(pid)
             
             data = BytesIO( self.recv_buffer.pop( sze ) )
+            print(data)
 
             name, packet_type, handler = self.protocol[pid]
             try:

@@ -5,7 +5,7 @@ from control.core.app import init_applications, prepare_applications, stop_appli
 
 import control.config
 
-def start_control ( settings: str ):
+def start_control ( settings: str, test_run = False ):
     from control.config.manager import ConfigManager
 
     ConfigManager().import_config( settings )
@@ -16,7 +16,7 @@ def start_control ( settings: str ):
 
     from control.contrib.main.app import MainApplication
     application = MainApplication()
-    application.run()
+    application.run(["run", '--non-blocking'] if test_run else sys.argv)
 def stop_control ():
     from control.config.manager import ConfigManager
     if not ConfigManager().has_config(): return

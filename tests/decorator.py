@@ -13,7 +13,13 @@ def wrap_test (f):
 
         if "control.config.include" in sys.modules:
             del sys.modules[ "control.config.include" ]
+        R = []
+        for key in sys.modules:
+            if key.endswith(".app") and key.startswith("control.contrib"):
+                R.append(key)
+        for key in R: del sys.modules[key]
     def wrapped ():
+        reset()
         try:
             f()
         except Exception as ex:

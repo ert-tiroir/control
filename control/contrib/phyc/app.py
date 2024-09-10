@@ -27,6 +27,7 @@ class PhysicalControllerApplication (Application):
                 PhysicalControllerApplication().protocol.check_receive()
             PhysicalControllerApplication().device.start_thread( on_receive_end )
         self.thread = threading.Thread( target=run_thread )
+        self.thread.start()
 
     def stop_application(self):
         super().stop_application()
@@ -41,3 +42,6 @@ class PhysicalControllerApplication (Application):
             delattr(self, "thread")
     def send (self, packet):
         self.protocol.send(packet)
+
+def send_to_phyc (packet):
+    PhysicalControllerApplication().send(packet)

@@ -39,13 +39,14 @@ class MainApplication (Application):
             for command, handler in command_set:
                 print(f"\t{command}")
         sys.exit(code)
-    def run (self):
-        if len(sys.argv) <= 1:
+    def run (self, args):
+        if len(args) == 0:
             self.help(0)
             return
         
-        name, *args = sys.argv[1:]
+        name, *args = args
         handler = self.commands.get(name, None)
+        print(name, args, self.commands)
         if handler is None:
             print("Could not find subcommand")
             self.help(1)
