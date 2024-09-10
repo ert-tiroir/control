@@ -16,7 +16,7 @@ def start_control ( settings: str, test_run = False ):
 
     from control.contrib.main.app import MainApplication
     application = MainApplication()
-    application.run(["run", '--non-blocking'] if test_run else sys.argv)
+    application.run(["run", '--non-blocking'] if test_run else sys.argv[1:])
 def stop_control ():
     from control.config.manager import ConfigManager
     if not ConfigManager().has_config(): return

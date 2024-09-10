@@ -22,7 +22,7 @@ class SensorsApp(Application):
         self.next_measure = []
 
         self.running = settings.SENSORS_AUTOSTART
-        if self.running != False or self.running != True:
+        if self.running != False and self.running != True:
             print("Improperly configured, SENSORS_AUTOSTART can only be true or false")
             self.running = False
         
@@ -71,7 +71,7 @@ class SensorsApp(Application):
 
     def stop_application(self):
         self.closed = True
-        
+
         if hasattr(self, "thread"):
             self.thread.join()
 
