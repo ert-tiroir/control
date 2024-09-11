@@ -46,7 +46,7 @@ class MainApplication (Application):
         
         name, *args = args
         handler = self.commands.get(name, None)
-        print(name, args, self.commands)
+        
         if handler is None:
             print("Could not find subcommand")
             self.help(1)

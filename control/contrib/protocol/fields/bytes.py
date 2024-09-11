@@ -22,3 +22,9 @@ class BytesField (Field):
         self.subint.put(len(value), writer)
 
         writer.write( value )
+    def manifest(self):
+        return {
+            "type": "bytes",
+            "size": self.max_size,
+            "subint": self.subint.manifest()
+        }

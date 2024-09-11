@@ -17,6 +17,7 @@ class LazySettings ():
 
     CAMERA_AUTOSTART : bool
     CAMERA_COMMAND   : List[str] | Literal[None]
+    CAMERA_MODE      : Literal["WRITER"] | Literal["TRANSFER"]
 
     def __getattribute__(self, name: str) -> Any:
         return getattr(ConfigManager().get_config(), name)

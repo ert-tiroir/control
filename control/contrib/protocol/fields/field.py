@@ -8,3 +8,5 @@ class Field:
         raise NotImplementedError()
     def put (self, value: "Self", writer: "BytesIO"):
         raise NotImplementedError()
+    def manifest (self):
+        raise NotImplementedError()

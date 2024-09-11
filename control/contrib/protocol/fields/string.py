@@ -16,3 +16,9 @@ class StringField(Field):
         bts = bytes(value, encoding=self.encoding)
 
         self.subfield.put(bts, writer)
+    def manifest(self):
+        return {
+            "type": "string",
+            "encoding": self.encoding,
+            "subbytes": self.subfield.manifest()
+        }

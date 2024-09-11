@@ -20,7 +20,17 @@ class _StructField (Field):
 class FloatField(_StructField):
     def __init__(self) -> None:
         super().__init__("f", 4)
+    def manifest(self):
+        return {
+            "type": "float",
+            "size": self.size
+        }
 
 class DoubleField(_StructField):
     def __init__(self) -> None:
         super().__init__("d", 8)
+    def manifest(self):
+        return {
+            "type": "double",
+            "size": self.size
+        }

@@ -20,3 +20,9 @@ class IntegerField (Field):
         return res
     def put(self, value: int, writer: BytesIO):
         writer.write( (value % self.rng).to_bytes( self.length, self.encoding ) )
+    def manifest(self):
+        return {
+            "type": "int",
+            "size": self.length,
+            "encoding": self.encoding
+        }

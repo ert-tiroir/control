@@ -29,3 +29,17 @@ class MultiField(Field):
         
         for key, field in cls.__meta_fields__:
             field.put( getattr(value, key), writer )
+    def manifest(self):
+        cls = type(self)
+
+        return {
+            "type": "multi",
+            "fields": [
+                {
+                    "index": index,
+                    "key"  : key,
+                    "field": field.manifest()
+                }
+                for index, (key, field) in enumerate(cls.__meta_fields__)
+            ]
+        }
