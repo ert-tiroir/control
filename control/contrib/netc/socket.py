@@ -15,8 +15,9 @@ class NetControllerSocket:
     def connect (self, host, port):
         self.sock.connect((host, port))
     def close (self):
-        self.sock.close()
-        self.sock = None
+        if self.sock is not None:
+            self.sock.close()
+            self.sock = None
     def is_closed (self):
         return self.sock is None
     
