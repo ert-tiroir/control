@@ -1,12 +1,14 @@
 
 from io import BytesIO
 import socket
+import threading
 
 from control.contrib.protocol.abstract import AbstractProtocolApp
 
 
 class NetControllerSocket:
     def __init__(self, sock=None) -> None:
+        self.lock = threading.Lock()
         if sock is None:
             self.sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         else:
@@ -15,9 +17,10 @@ class NetControllerSocket:
     def connect (self, host, port):
         self.sock.connect((host, port))
     def close (self):
-        if self.sock is not None:
-            self.sock.close()
-            self.sock = None
+        with self.lock:
+            if self.sock is not None:
+                self.sock.close()
+                self.sock = None
     def is_closed (self):
         return self.sock is None
     

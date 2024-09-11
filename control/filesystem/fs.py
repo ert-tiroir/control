@@ -31,7 +31,8 @@ class FileSystem(metaclass=Singleton):
         fs = FileSystem()
 
         true_path = os.path.join(fs.folder, path)
-        os.makedirs(os.path.dirname(true_path))
+        if not os.path.exists(os.path.dirname(true_path)):
+            os.makedirs(os.path.dirname(true_path))
         return open(true_path, *args, **kwargs)
     @staticmethod
     def open_unique (path, *args, **kwargs):
