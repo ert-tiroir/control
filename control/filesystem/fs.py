@@ -5,9 +5,24 @@ from control.utils.singleton import Singleton
 
 class FileSystem(metaclass=Singleton):
     def __init__(self):
-        self.time   = datetime.datetime.now().isoformat().replace(":", "-")
-        self.folder = f"saves/run_{self.time}"
+        self.folder = FileSystem.unique_name("saves/run")
 
+    @staticmethod
+    def unique_name (name: str):
+        time = datetime.datetime.now().isoformat().replace(":", "-")
+
+        chunks = name.split(os.path.pathsep)
+        if len(chunks) == 1:
+            words = chunks[0].split(".")
+            offset = -2
+            if len(words) == 1: offset = -1
+
+            words[offset] = words[offset] + "_" + time
+
+            return ".".join(words)
+        else:
+            chunks[-1] = FileSystem.unique_name(chunks[-1])
+            return os.path.pathsep.join(chunks)
     @staticmethod
     def init_file_system ():
         fs = FileSystem() # Locks folder
@@ -18,3 +33,10 @@ class FileSystem(metaclass=Singleton):
         true_path = os.path.join(fs.folder, path)
         os.makedirs(os.path.dirname(true_path))
         return open(true_path, *args, **kwargs)
+    @staticmethod
+    def open_unique (path, *args, **kwargs):
+        return FileSystem.open(
+            FileSystem.unique_name(path),
+            *args,
+            **kwargs
+        )

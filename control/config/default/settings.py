@@ -7,3 +7,6 @@ NEXT_ON_MODEL_CHAIN      = lambda *args, **kwargs: 0
 SENSORS_AUTOSTART = False
 
 SENSORS_LIST = []
+
+CAMERA_AUTOSTART = False
+CAMERA_COMMAND   = None

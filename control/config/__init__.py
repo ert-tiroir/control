@@ -1,5 +1,5 @@
 
-from typing import Any, Callable, List, Tuple
+from typing import Any, Callable, List, Literal, Tuple
 
 from control.config.manager import ConfigManager
 from control.contrib.protocol.fields.packet import MultiField
@@ -14,6 +14,9 @@ class LazySettings ():
 
     SENSORS_AUTOSTART : bool
     SENSORS_LIST      : List[AbstractDevice]
+
+    CAMERA_AUTOSTART : bool
+    CAMERA_COMMAND   : List[str] | Literal[None]
 
     def __getattribute__(self, name: str) -> Any:
         return getattr(ConfigManager().get_config(), name)
