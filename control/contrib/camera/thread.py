@@ -19,7 +19,7 @@ class CameraThread:
             self.on_start()
         
         self.thread = threading.Thread(target=run_thread)
-        self.thread.run()
+        self.thread.start()
         
     def on_start (self):
         from control.contrib.camera.app import CameraApplication
