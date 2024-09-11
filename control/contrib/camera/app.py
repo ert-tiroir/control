@@ -1,4 +1,5 @@
 
+import threading
 from control.config import settings
 from control.contrib.protocol.fields.packet import MultiField
 from control.core.app import Application
@@ -7,6 +8,8 @@ from control.filesystem.fs import FileSystem
 class CameraApplication(Application):
     def __init__(self, path: str) -> None:
         super().__init__(path)
+
+        self.lock = threading.Lock()
 
         if settings.CAMERA_COMMAND is None and settings.CAMERA_MODE == "WRITER":
             print("Improperly configured, CAMERA_COMMAND should contain an array of values")
@@ -52,12 +55,16 @@ class CameraApplication(Application):
         
         self.close_thread()
 
-        self.file.close()
+        with self.lock:
+            self.file.close()
+            self.file = None
         settings.NEXT_ON_CONTROLLER_CHAIN(packet)
     def on_data (self, packet: MultiField):
         if not self.can_start: return
         
-        self.file.write(packet.data)
-        self.file.flush()
+        with self.lock:
+            if self.file is not None:
+                self.file.write(packet.data)
+                self.file.flush()
 
         settings.NEXT_ON_MODEL_CHAIN(packet)
