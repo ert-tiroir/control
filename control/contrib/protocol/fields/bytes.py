@@ -3,7 +3,13 @@ from io import BytesIO
 from control.contrib.protocol.fields.field import Field
 from control.contrib.protocol.fields.integer import IntegerField
 
-
+def get_factor (size):
+    factor = 1
+    intsze = 0
+    while factor < 2 * size + 3:
+        factor *= 256
+        intsze += 1
+    return intsze
 class BytesField (Field):
     def __init__(self, max_size = 2 ** 31 - 1):
         self.intsze = 0

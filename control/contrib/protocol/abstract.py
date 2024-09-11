@@ -1,5 +1,6 @@
 
 from io import BytesIO
+from control.contrib.protocol.fields.bytes import get_factor
 from control.contrib.protocol.fields.integer import IntegerField
 from control.contrib.protocol.fields.packet import MultiField
 from control.core.app import ApplicationManager
@@ -37,7 +38,7 @@ class AbstractProtocolApp:
         
         for index, (name, cls, handler) in enumerate(protocol):
             setattr(cls, self.__index_name__, index)
-        self.pid_field = IntegerField(len(protocol))
+        self.pid_field = IntegerField(max(1, get_factor(len(protocol))))
         self.sze_field = IntegerField(8)
 
     def send (self, packet: MultiField):

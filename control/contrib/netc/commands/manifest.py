@@ -20,4 +20,7 @@ def create_manifest (target = "json"):
             "target": name,
             "packet": cls().manifest()
         })
-    print(json.dumps(_json, indent=4))
+    print(json.dumps({
+        "payload": _json,
+        "pid_sze": application.protocol.pid_field.length
+    }, indent=4))
