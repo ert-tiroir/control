@@ -23,7 +23,6 @@ class NetControllerApplication (Application):
                 try:
                     client, address = self.serversocket.accept()
                 except socket.timeout:
-                    print("TIMEOUT")
                     continue
                 self.client = NetControllerSocket(client)
 
@@ -37,6 +36,12 @@ class NetControllerApplication (Application):
                         result = self.client.receive(self.protocol)
                     except socket.timeout:
                         continue
+                    except OSError as error:
+                        print("NetControllerApplication:", str(error))
+                        if self.client is not None:
+                            self.client.close()
+                            self.client = None
+                        break
                     if result == b'': break
 
                     self.protocol.recv_buffer.put(result)
@@ -47,7 +52,7 @@ class NetControllerApplication (Application):
                     self.client = None
         except OSError as error:
             print("NetControllerApplication:", str(error))
-            print("Thread has been stopped")
+        print("Thread has been stopped")
         
         self.serversocket.close()
     
@@ -63,8 +68,9 @@ class NetControllerApplication (Application):
         if hasattr(self, "serversocket"):
             self.serversocket.close()
         if hasattr(self, "client") and self.client is not None:
-            self.client.close()
+            client = self.client
             self.client = None
+            client.close()
         if hasattr(self, "thread") and self.thread.is_alive():
             self.thread.join()
 
