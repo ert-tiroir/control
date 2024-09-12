@@ -42,15 +42,16 @@ class CameraApplication(Application):
             self.thread.join()
         delattr(self, "thread")
 
-    def on_start (self, packet: MultiField):
+    def on_start (self, packet: MultiField = None):
         if not self.can_start: return
 
         self.file = FileSystem.open_unique("media/video.mp4", "wb")
         
         if settings.CAMERA_MODE == "WRITER":
             self.init_thread()
-        settings.NEXT_ON_CONTROLLER_CHAIN(packet)
-    def on_stop (self, packet: MultiField):
+        if packet is not None:
+            settings.NEXT_ON_CONTROLLER_CHAIN(packet)
+    def on_stop (self, packet: MultiField = None):
         if not self.can_start: return
         
         self.close_thread()
@@ -58,7 +59,8 @@ class CameraApplication(Application):
         with self.lock:
             self.file.close()
             self.file = None
-        settings.NEXT_ON_CONTROLLER_CHAIN(packet)
+        if packet is not None:
+            settings.NEXT_ON_CONTROLLER_CHAIN(packet)
     def on_data (self, packet: MultiField):
         if not self.can_start: return
         
