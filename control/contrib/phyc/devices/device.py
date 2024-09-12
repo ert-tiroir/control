@@ -12,9 +12,7 @@ class PhysicalDevice:
         assert False, "Not implemented"
     def get_name (self):
         assert False, "Not implemented"
-    
-    def is_transfer_device (self) -> bool:
-        return False
+
     def start_transfer (self, buffer: bytes):
         assert False, "Not implemented"
     
