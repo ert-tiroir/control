@@ -79,6 +79,8 @@ class ESpiDevice(AbstractDevice):
         self.master_request = digitalio.DigitalInOut(board.D27)
         self.master_request.direction = digitalio.Direction.OUTPUT
 
+        self.request_offset = -1
+
         self.tx_buffer = [0] * BUFR_SIZE
         self.rx_buffer = [0] * BUFR_SIZE
 
