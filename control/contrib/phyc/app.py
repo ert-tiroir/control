@@ -23,9 +23,16 @@ class PhysicalControllerApplication (Application):
         self.device = settings.PHYSICAL_DEVICE
 
         def run_thread ():
-            def on_receive_end ():
+            def on_receive_end (data: bytes):
+                print(data[:40])
                 PhysicalControllerApplication().protocol.check_receive()
-            PhysicalControllerApplication().device.start_thread( on_receive_end )
+            PhysicalControllerApplication().device.start_thread(
+                on_receive_end
+            )
+
+            PhysicalControllerApplication().device.start_transfer(bytes(
+                "Hello, SPI !", encoding="utf-8"
+            ) + bytes([0] * (1023 - len( "Hello, SPI !" ))))
         self.thread = threading.Thread( target=run_thread )
         self.thread.start()
 
@@ -42,6 +49,9 @@ class PhysicalControllerApplication (Application):
             delattr(self, "thread")
     def send (self, packet):
         self.protocol.send(packet)
+
+        queue = self.protocol.send_buffer
+        self.device.start_transfer(queue.pop(len(queue)))
 
 def send_to_phyc (packet):
     PhysicalControllerApplication().send(packet)

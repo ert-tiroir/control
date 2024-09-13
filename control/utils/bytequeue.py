@@ -33,4 +33,7 @@ class ByteQueue:
         self.lock.release()
         return data
     def __len__(self):
-        return len(self._buffer) - self.offset
+        self.lock.acquire()
+        res = len(self._buffer) - self.offset
+        self.lock.release()
+        return res
