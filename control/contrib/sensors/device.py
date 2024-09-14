@@ -1,5 +1,5 @@
 
-from typing import Any, List, Type
+from typing import Any, Callable, List, Tuple, Type
 
 from control.contrib.protocol.fields.packet import MultiField
 
@@ -13,6 +13,9 @@ class AbstractDevice:
         assert False, "Not implemented"
     @staticmethod
     def get_data_format () -> List[str]:
+        assert False, "Not implemented"
+    @staticmethod
+    def get_custom_protocol () -> Tuple[str, MultiField, Callable[[MultiField], Any]]:
         assert False, "Not implemented"
     def read_device_packet (self) -> MultiField:
         assert False, "Not implemented"

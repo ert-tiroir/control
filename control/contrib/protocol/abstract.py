@@ -4,6 +4,7 @@ from control.contrib.protocol.fields.bytes import get_factor
 from control.contrib.protocol.fields.integer import IntegerField
 from control.contrib.protocol.fields.packet import MultiField
 from control.core.app import ApplicationManager
+from control.filesystem.fs import FileSystem
 from control.utils.bytequeue import ByteQueue
 
 
@@ -12,6 +13,9 @@ class AbstractProtocolApp:
         self.__module_name__ = module
         self.__var_name__    = varname
         self.__index_name__  = indexname
+
+        self.tx_file = FileSystem.open_unique( f"/protocol/tx_{varname}", "wb" )
+        self.rx_file = FileSystem.open_unique( f"/protocol/tx_{varname}", "wb" )
     def init_protocol (self):
         manager = ApplicationManager()
 
@@ -61,26 +65,26 @@ class AbstractProtocolApp:
         self.pid_field.put(_packet_index, header)
 
         buffer = header.getvalue() + data
-        print("Sending ", buffer)
+        self.tx_file.write(buffer)
         self.send_buffer.put(buffer)
     def check_receive (self):
         while True:
-            print(self.recv_buffer.peek(8))
             sze_buffer = BytesIO(self.recv_buffer.peek(8))
 
             sze = self.sze_field.parse(sze_buffer)
-            print(sze)
             if sze + 8 > len(self.recv_buffer): return # There is no more data
 
-            self.recv_buffer.pop(8)
+            self.rx_file.write(self.recv_buffer.pop(8))
             sze -= self.pid_field.length
-            header = BytesIO( self.recv_buffer.pop( self.pid_field.length ) )
+            pid_buf = self.recv_buffer.pop( self.pid_field.length )
+            self.rx_file.write(pid_buf)
+            header = BytesIO( pid_buf )
             
             pid = self.pid_field.parse( header )
-            print(pid)
             
-            data = BytesIO( self.recv_buffer.pop( sze ) )
-            print(data)
+            data_buf = self.recv_buffer.pop( sze )
+            self.rx_file.write(data_buf)
+            data = BytesIO( data_buf )
 
             name, packet_type, handler = self.protocol[pid]
             try:
@@ -90,4 +94,5 @@ class AbstractProtocolApp:
             handler(packet)
 
     def stop_protocol (self):
-        pass
+        self.tx_file.close()
+        self.rx_file.close()

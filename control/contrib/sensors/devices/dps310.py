@@ -1,14 +1,16 @@
 
-from typing import Any, List, Type
+from typing import Any, Callable, List, Tuple, Type
 
 from control.contrib.protocol.fields.number import FloatField
 from control.contrib.protocol.fields.packet import MultiField
+from control.contrib.sensors.app import SensorsApp
 from control.contrib.sensors.device import AbstractDevice
 
 import board
 from adafruit_dps310.basic import DPS310
+from control.utils.singleton import Singleton
 
-class DPS310Device(AbstractDevice):
+class DPS310Device(AbstractDevice, metaclass=Singleton):
     def init_device (self):
         self.i2c = board.I2C()
         self.dps = DPS310(self.i2c)
@@ -20,6 +22,9 @@ class DPS310Device(AbstractDevice):
     @staticmethod
     def get_data_format () -> List[str]:
         return [ "temperature", "pressure" ]
+    @staticmethod
+    def get_custom_protocol() -> Tuple[str, MultiField, Callable[[MultiField], Any]]:
+        return ( "/sensors/data/dps310", DPS310Packet, handle_dps310_packet )
     def read_device_packet (self) -> "DPS310Packet":
         packet = DPS310Packet()
 
@@ -37,3 +42,6 @@ class DPS310Device(AbstractDevice):
 class DPS310Packet(MultiField):
     temperature = FloatField()
     pressure    = FloatField()
+
+def handle_dps310_packet (packet: DPS310Packet):
+    SensorsApp().on_data( DPS310Device(), packet )

@@ -14,6 +14,7 @@ class LazySettings ():
 
     SENSORS_AUTOSTART : bool
     SENSORS_LIST      : List[AbstractDevice]
+    SENSORS_MODE      : Literal["WRITER"] | Literal["TRANSFER"]
 
     CAMERA_AUTOSTART : bool
     CAMERA_COMMAND   : List[str] | Literal[None]

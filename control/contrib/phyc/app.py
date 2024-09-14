@@ -15,7 +15,7 @@ class PhysicalControllerApplication (Application):
         self.protocol = AbstractProtocolApp( "protocol", "physical", "_packet_phy_index" )
         self.protocol.init_protocol()
     def init_application(self):
-        self.device   = None
+        self.device = None
         if not hasattr(settings, "PHYSICAL_DEVICE"):
             return
             assert False, "Missing Physical Device in settings (settings.PHYSICAL_DEVICE)"
@@ -24,15 +24,13 @@ class PhysicalControllerApplication (Application):
 
         def run_thread ():
             def on_receive_end (data: bytes):
-                print(data[:40])
-                PhysicalControllerApplication().protocol.check_receive()
+                protocol = PhysicalControllerApplication().protocol
+
+                protocol.recv_buffer.put(data)
+                protocol.check_receive()
             PhysicalControllerApplication().device.start_thread(
                 on_receive_end
             )
-
-            PhysicalControllerApplication().device.start_transfer(bytes(
-                "Hello, SPI !", encoding="utf-8"
-            ) + bytes([0] * (1023 - len( "Hello, SPI !" ))))
         self.thread = threading.Thread( target=run_thread )
         self.thread.start()
 
