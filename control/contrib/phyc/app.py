@@ -50,6 +50,3 @@ class PhysicalControllerApplication (Application):
 
         queue = self.protocol.send_buffer
         self.device.start_transfer(queue.pop(len(queue)))
-
-def send_to_phyc (packet):
-    PhysicalControllerApplication().send(packet)

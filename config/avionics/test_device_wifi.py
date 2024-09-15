@@ -22,9 +22,9 @@
 ########################################################
 
 from control.config.default.settings import *
-from control.contrib.phyc.app import send_to_phyc
 from control.contrib.phyc.devices.espi import ESpiDevice
 from control.contrib.phyc.devices.socket import SimpleSocketDevice
+from control.contrib.phyc.sender import send_to_phyc
 from control.contrib.sensors.devices.dps310 import DPS310Device
 
 ENABLED_APPS = [
@@ -44,6 +44,6 @@ CAMERA_AUTOSTART = True
 CAMERA_COMMAND   = [ "libcamera-vid", "-t", "0", "-o", "-"]
 CAMERA_MODE      = "WRITER"
 
-NEXT_ON_MODEL_CHAIN = send_to_phyc
+NEXT_ON_MODEL_CHAIN = send_to_phyc()
 
 PHYSICAL_DEVICE = SimpleSocketDevice( "172.20.10.2", 5041 )
