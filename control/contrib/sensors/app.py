@@ -5,7 +5,6 @@ from typing import List
 from control.contrib.protocol.fields.packet import MultiField
 from control.contrib.sensors.csv import CSVDataSheets
 from control.contrib.sensors.device import AbstractDevice
-from control.contrib.sensors.protocol.control.start import StartSensorPacket
 from control.core.app import Application
 
 from control.config import settings
