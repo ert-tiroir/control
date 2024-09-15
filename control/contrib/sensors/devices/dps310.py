@@ -3,7 +3,7 @@ from typing import Any, Callable, List, Tuple, Type
 
 from control.contrib.protocol.fields.number import FloatField
 from control.contrib.protocol.fields.packet import MultiField
-from control.contrib.sensors.app import SensorsApp
+
 from control.contrib.sensors.device import AbstractDevice
 
 import board
@@ -44,4 +44,6 @@ class DPS310Packet(MultiField):
     pressure    = FloatField()
 
 def handle_dps310_packet (packet: DPS310Packet):
+    from control.contrib.sensors.app import SensorsApp
+    
     SensorsApp().on_data( DPS310Device(), packet )
