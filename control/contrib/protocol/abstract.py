@@ -14,8 +14,8 @@ class AbstractProtocolApp:
         self.__var_name__    = varname
         self.__index_name__  = indexname
 
-        self.tx_file = FileSystem.open_unique( f"/protocol/tx_{varname}", "wb" )
-        self.rx_file = FileSystem.open_unique( f"/protocol/tx_{varname}", "wb" )
+        self.tx_file = FileSystem.open_unique( f"protocol/tx_{varname}", "wb" )
+        self.rx_file = FileSystem.open_unique( f"protocol/rx_{varname}", "wb" )
     def init_protocol (self):
         manager = ApplicationManager()
 
