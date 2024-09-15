@@ -11,7 +11,7 @@ net = [
     ("/camera/model/media", DataPacket, None) # Data packet can't be received on net, only on physical
 ]
 
-phy = [
+physical = [
     ("/camera/control/start", StartCameraPacket, start_camera),
     ("/camera/control/stop",  StopCameraPacket,  stop_camera),
 
