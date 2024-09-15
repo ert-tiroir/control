@@ -21,6 +21,7 @@ class PhysicalControllerApplication (Application):
             assert False, "Missing Physical Device in settings (settings.PHYSICAL_DEVICE)"
 
         self.device = settings.PHYSICAL_DEVICE
+        self.device.init_channel()
 
         def run_thread ():
             def on_receive_end (data: bytes):

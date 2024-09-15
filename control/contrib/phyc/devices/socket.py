@@ -1,13 +1,13 @@
 
 import socketserver
 import threading
-from control.contrib.sensors.device import AbstractDevice
+from control.contrib.phyc.devices.device import PhysicalDevice
 
 import socket
 
 from control.utils.bytequeue import ByteQueue
 
-class AbstractSocketDevice(AbstractDevice):
+class AbstractSocketDevice(PhysicalDevice):
     def init_channel (self):
         self.tx_buffer = ByteQueue()
 
