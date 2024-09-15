@@ -30,12 +30,13 @@ class SensorsApp(Application):
         next_devices = []
 
         for device in self.devices:
-            try:
-                device.init_device()
-            except Exception as exception:
-                print("Device", device.get_name(), "failed to initialize")
-                print(exception)
-                continue
+            if settings.SENSORS_MODE == "WRITER":
+                try:
+                    device.init_device()
+                except Exception as exception:
+                    print("Device", device.get_name(), "failed to initialize")
+                    print(exception)
+                    continue
             
             next_devices.append(device)
             self.next_measure.append(time.time() + device.get_time_period())
