@@ -1,6 +1,7 @@
 
 import socketserver
 import threading
+import time
 from control.contrib.phyc.devices.device import PhysicalDevice
 
 import socket
@@ -41,14 +42,15 @@ class AbstractSocketDevice(PhysicalDevice):
                     on_receive_end(res)
                 except socket.timeout:
                     pass
-
-                if len(self.tx_buffer) > 0:
+                
+                start = time.time()
+                while len(self.tx_buffer) > 0 and time.time() - start <= 0.1:
                     try:
                         sze = self.sock.send( self.tx_buffer.peek(1024) )
                         
                         self.tx_buffer.pop(sze)
                     except socket.timeout:
-                        pass
+                        break
             
             self.deinit_thread()
 
