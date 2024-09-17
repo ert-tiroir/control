@@ -98,7 +98,8 @@ class ESpiDevice(PhysicalDevice):
     
     def start_tx_thread (self):
         while True:
-            self.tx_event.wait()
+            if len(self.tx_queue) < MIN_QSIZE:
+                self.tx_event.wait()
             if not self.running: break
 
             with self.gp_lock:
