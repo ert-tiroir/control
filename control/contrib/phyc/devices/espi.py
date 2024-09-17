@@ -100,6 +100,7 @@ class ESpiDevice(PhysicalDevice):
         while True:
             if len(self.tx_queue) < MIN_QSIZE:
                 self.tx_event.wait()
+                self.tx_event.clear()
                 print(f"TX EVENT RECEIVED size={len(self.tx_queue)} time={time.time()}")
             if not self.running: break
 
@@ -125,7 +126,6 @@ class ESpiDevice(PhysicalDevice):
                 self.request_offset = (self.request_offset + 1) & 1
 
                 self.tx_buffer[0] = 0
-                self.tx_event.clear()
     def start_watch_thread (self):
         while self.running:
             with self.gp_lock:
