@@ -28,7 +28,7 @@ from control.contrib.phyc.sender import send_to_phyc
 from control.contrib.sensors.devices.dps310 import DPS310Device
 
 ENABLED_APPS = [
-    # "control.contrib.camera",
+    "control.contrib.camera",
     "control.contrib.sensors",
     "control.contrib.phyc"
 ]

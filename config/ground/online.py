@@ -23,30 +23,27 @@
 ########################################################
 
 from control.config.default.settings import *
-from control.contrib.netc.app import send_to_netc
-from control.contrib.phyc.app import send_to_phyc
 from control.contrib.phyc.devices.espi import ESpiDevice
+from control.contrib.phyc.sender import send_to_phyc
 from control.contrib.sensors.devices.dps310 import DPS310Device
 
 ENABLED_APPS = [
     "control.contrib.camera",
     "control.contrib.sensors",
-    "control.contrib.phyc",
-    "control.contrib.netc"
+    "control.contrib.phyc"
 ]
 
 SENSORS_LIST = [
     DPS310Device()
 ]
 
-SENSORS_AUTOSTART = False
+SENSORS_AUTOSTART = True
 SENSORS_MODE      = "TRANSFER"
 
-CAMERA_AUTOSTART = False
+CAMERA_AUTOSTART = True
 CAMERA_COMMAND   = [ "libcamera-vid", "-t", "0", "-o", "-"]
 CAMERA_MODE      = "TRANSFER"
 
-NEXT_ON_CONTROLLER_CHAIN = send_to_phyc
-NEXT_ON_MODEL_CHAIN      = send_to_netc
+NEXT_ON_CONTROLLER_CHAIN = send_to_phyc()
 
 PHYSICAL_DEVICE = ESpiDevice()
