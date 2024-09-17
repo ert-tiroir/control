@@ -60,6 +60,7 @@ class PhysicalControllerApplication (Application):
             print(f"STATISTICS OVER THE LAST {delta} SECONDS - TIME = {time.time()}")
             print(f" - {tx_stat} bytes sent, {rx_stat} bytes received")
             print(f" - {tx_stat / delta} bytes / second sent, { rx_stat / delta } bytes / second received")
+            self.lstat = time.time()
     def stop_application(self):
         super().stop_application()
         self.protocol.stop_protocol()
