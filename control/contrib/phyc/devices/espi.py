@@ -62,7 +62,9 @@ class ESpiDevice(PhysicalDevice):
 
     def init_channel(self):
         self.spi = board.SPI()
+        self.spi.try_lock()
         self.spi.configure(baudrate=16_000_000, phase=0, polarity=0)
+        self.spi.unlock()
 
         self.tx_queue = ByteQueue()
 
