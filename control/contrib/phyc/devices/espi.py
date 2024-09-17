@@ -4,7 +4,7 @@
 import threading
 import time
 from typing import Any, Callable, List
-from control.contrib.sensors.device import AbstractDevice
+from control.contrib.phyc.devices.device import PhysicalDevice
 
 import board
 import digitalio
@@ -30,7 +30,7 @@ class _SPI:
     def write_readinto (self, tx: List[int], rx: List[int]): ...
     def unlock(self): ...
 
-class ESpiDevice(AbstractDevice):
+class ESpiDevice(PhysicalDevice):
     master_request: _GPIO
 
     slave_request0 : _GPIO
@@ -60,7 +60,7 @@ class ESpiDevice(AbstractDevice):
         else:
             return self.slave_request1.value
 
-    def init_device(self):
+    def init_channel(self):
         self.spi = board.SPI()
 
         self.tx_queue = ByteQueue()
