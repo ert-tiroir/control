@@ -44,10 +44,12 @@ class PhysicalControllerApplication (Application):
         self.lstat = time.time()
 
     def check_stats (self):
+        if not hasattr(self, "last_tx_in_queue"):
+            self.last_tx_in_queue = 0
         with self.stat_lock:
             if time.time() - self.lstat <= settings.PHYSICAL_STATS_DELAY: return
 
-            tx_stat, rx_stat = self.device.get_stream_stats()
+            tx_stat, rx_stat, tx_in_queue = self.device.get_stream_stats()
             self.device.clear_stream_stats()
 
             delta = time.time() - self.lstat
@@ -55,12 +57,16 @@ class PhysicalControllerApplication (Application):
             self.file.write(f"STATISTICS OVER THE LAST {delta} SECONDS - TIME = {time.time()}\n")
             self.file.write(f" - {tx_stat} bytes sent, {rx_stat} bytes received\n")
             self.file.write(f" - {tx_stat / delta} bytes / second sent, { rx_stat / delta } bytes / second received\n")
+            self.file.write(f" - {tx_in_queue} bytes are waiting inside the queue, hence a modification {tx_in_queue - self.last_tx_in_queue}, for a delta of {(tx_in_queue - self.last_tx_in_queue) / delta} bytes / second\n")
             self.file.write(f"\n")
             
             print(f"STATISTICS OVER THE LAST {delta} SECONDS - TIME = {time.time()}")
             print(f" - {tx_stat} bytes sent, {rx_stat} bytes received")
             print(f" - {tx_stat / delta} bytes / second sent, { rx_stat / delta } bytes / second received")
+            print(f" - {tx_in_queue} bytes are waiting inside the queue, hence a modification {tx_in_queue - self.last_tx_in_queue}, for a delta of {(tx_in_queue - self.last_tx_in_queue) / delta} bytes / second")
             self.lstat = time.time()
+
+            self.last_tx_in_queue = tx_in_queue
     def stop_application(self):
         super().stop_application()
         self.protocol.stop_protocol()
