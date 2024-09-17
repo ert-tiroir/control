@@ -60,11 +60,20 @@ class ESpiDevice(PhysicalDevice):
         else:
             return self.slave_request1.value
 
+    def get_stream_stats(self):
+        return (self.tx_stat, self.rx_stat)
+    def clear_stream_stats(self):
+        self.tx_stat = 0
+        self.rx_stat = 0
+        return 
     def init_channel(self):
         self.spi = board.SPI()
         self.spi.try_lock()
         self.spi.configure(baudrate=16_000_000, phase=0, polarity=0)
         self.spi.unlock()
+
+        self.tx_stat = 0
+        self.rx_stat = 0
 
         self.tx_queue = ByteQueue()
 
@@ -103,12 +112,12 @@ class ESpiDevice(PhysicalDevice):
         while True:
             if len(self.tx_queue) < MIN_QSIZE:
                 self.tx_event.wait()
-                print(f"TX EVENT RECEIVED size={len(self.tx_queue)} time={time.time()}")
             if not self.running: break
 
             with self.gp_lock:
                 self.tx_event.clear()
                 if len(self.tx_queue) >= MIN_QSIZE:
+                    self.tx_stat += 1023
                     self.tx_buffer[0] = 1
                     self.master_request.value = True
 
@@ -125,6 +134,7 @@ class ESpiDevice(PhysicalDevice):
                 self.spi.unlock()
 
                 if self.rx_buffer[0] != 0:
+                    self.rx_stat += 1023
                     self.on_recv( bytes(self.rx_buffer[1:]) )
                 self.request_offset = (self.request_offset + 1) & 1
 

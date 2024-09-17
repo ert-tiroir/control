@@ -1,6 +1,6 @@
 
 import enum
-from typing import Literal
+from typing import Literal, Tuple
 
 class PhysicalDevice:
     def init_channel (self):
@@ -8,6 +8,10 @@ class PhysicalDevice:
     def get_name (self):
         assert False, "Not implemented"
 
+    def get_stream_stats (self) -> Tuple[int, int]:
+        assert False, "Not implemented"
+    def clear_stream_stats (self):
+        assert False, "Not implemented"
     def start_transfer (self, buffer: bytes):
         assert False, "Not implemented"
     

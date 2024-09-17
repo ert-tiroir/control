@@ -2,6 +2,7 @@
 import socketserver
 import threading
 import time
+from typing import Tuple
 from control.contrib.phyc.devices.device import PhysicalDevice
 
 import socket
@@ -19,6 +20,10 @@ class AbstractSocketDevice(PhysicalDevice):
     def start_transfer (self, buffer: bytes):
         self.tx_buffer.put(buffer)
     
+    def get_stream_stats(self) -> Tuple[int, int]:
+        return (0, 0) # Not implemented
+    def clear_stream_stats(self):
+        return # Not implemented
     def init_thread (self):
         pass
     def deinit_thread (self):

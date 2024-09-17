@@ -20,6 +20,8 @@ class LazySettings ():
     CAMERA_COMMAND   : List[str] | Literal[None]
     CAMERA_MODE      : Literal["WRITER"] | Literal["TRANSFER"]
 
+    PHYSICAL_STATS_DELAY : float
+
     def __getattribute__(self, name: str) -> Any:
         return getattr(ConfigManager().get_config(), name)
 
