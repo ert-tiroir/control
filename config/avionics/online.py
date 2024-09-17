@@ -36,10 +36,10 @@ SENSORS_LIST = [
     DPS310Device()
 ]
 
-SENSORS_AUTOSTART = True
+SENSORS_AUTOSTART = False
 SENSORS_MODE      = "WRITER"
 
-CAMERA_AUTOSTART = True
+CAMERA_AUTOSTART = False
 CAMERA_COMMAND   = [ "libcamera-vid", "-t", "0", "-o", "-"]
 CAMERA_MODE      = "WRITER"
 

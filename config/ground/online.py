@@ -30,17 +30,18 @@ from control.contrib.sensors.devices.dps310 import DPS310Device
 ENABLED_APPS = [
     "control.contrib.camera",
     "control.contrib.sensors",
-    "control.contrib.phyc"
+    "control.contrib.phyc",
+    "control.contrib.netc"
 ]
 
 SENSORS_LIST = [
     DPS310Device()
 ]
 
-SENSORS_AUTOSTART = True
+SENSORS_AUTOSTART = False
 SENSORS_MODE      = "TRANSFER"
 
-CAMERA_AUTOSTART = True
+CAMERA_AUTOSTART = False
 CAMERA_COMMAND   = [ "libcamera-vid", "-t", "0", "-o", "-"]
 CAMERA_MODE      = "TRANSFER"
 
