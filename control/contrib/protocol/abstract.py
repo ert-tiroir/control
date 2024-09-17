@@ -1,5 +1,7 @@
 
 from io import BytesIO
+from control.config import settings
+from control.contrib.phyc.protocol import create_flush_packet
 from control.contrib.protocol.fields.bytes import get_factor
 from control.contrib.protocol.fields.integer import IntegerField
 from control.contrib.protocol.fields.packet import MultiField
@@ -96,3 +98,10 @@ class AbstractProtocolApp:
     def stop_protocol (self):
         self.tx_file.close()
         self.rx_file.close()
+
+def control_send_and_flush (packet):
+    settings.NEXT_ON_CONTROLLER_CHAIN(packet)
+    settings.NEXT_ON_CONTROLLER_CHAIN( create_flush_packet() )
+def model_send_and_flush (packet):
+    settings.NEXT_ON_MODEL_CHAIN(packet)
+    settings.NEXT_ON_MODEL_CHAIN( create_flush_packet() )

@@ -73,6 +73,3 @@ class NetControllerApplication (Application):
             client.close()
         if hasattr(self, "thread") and self.thread.is_alive():
             self.thread.join()
-
-def send_to_netc (packet):
-    NetControllerApplication().send(packet)

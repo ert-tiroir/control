@@ -23,6 +23,7 @@
 ########################################################
 
 from control.config.default.settings import *
+from control.contrib.netc.sender import send_to_netc
 from control.contrib.phyc.devices.espi import ESpiDevice
 from control.contrib.phyc.sender import send_to_phyc
 from control.contrib.sensors.devices.dps310 import DPS310Device
@@ -46,5 +47,6 @@ CAMERA_COMMAND   = [ "libcamera-vid", "-t", "0", "-o", "-"]
 CAMERA_MODE      = "TRANSFER"
 
 NEXT_ON_CONTROLLER_CHAIN = send_to_phyc()
+NEXT_ON_MODEL_CHAIN      = send_to_netc()
 
 PHYSICAL_DEVICE = ESpiDevice()

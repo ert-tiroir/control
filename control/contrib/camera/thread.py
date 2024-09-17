@@ -27,6 +27,8 @@ class CameraThread:
         self.proc = None
         self.proc = subprocess.Popen( settings.CAMERA_COMMAND, stdout=subprocess.PIPE )
 
+        CameraApplication().model_start()
+
         id = 0
         while self.running:
             data = self.proc.stdout.read(16_384)
@@ -42,6 +44,8 @@ class CameraThread:
         self.proc.kill()
         self.proc.terminate()
         self.proc = None
+        
+        CameraApplication().model_end()
 
     def stop (self):
         self.running = False
