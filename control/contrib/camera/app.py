@@ -1,6 +1,7 @@
 
 import threading
 from control.config import settings
+from control.contrib.phyc.protocol import create_flush_packet
 from control.contrib.protocol.fields.packet import MultiField
 from control.core.app import Application
 from control.filesystem.fs import FileSystem
@@ -51,16 +52,19 @@ class CameraApplication(Application):
             self.init_thread()
         if packet is not None:
             settings.NEXT_ON_CONTROLLER_CHAIN(packet)
+            settings.NEXT_ON_CONTROLLER_CHAIN( create_flush_packet() )
     def on_stop (self, packet: MultiField = None):
         if not self.can_start: return
         
-        self.close_thread()
+        if settings.CAMERA_MODE == "WRITER":
+            self.close_thread()
 
         with self.lock:
             self.file.close()
             self.file = None
         if packet is not None:
             settings.NEXT_ON_CONTROLLER_CHAIN(packet)
+            settings.NEXT_ON_CONTROLLER_CHAIN( create_flush_packet() )
     def on_data (self, packet: MultiField):
         if not self.can_start: return
         
