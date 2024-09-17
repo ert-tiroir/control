@@ -21,7 +21,7 @@ class AbstractSocketDevice(PhysicalDevice):
         self.tx_buffer.put(buffer)
     
     def get_stream_stats(self) -> Tuple[int, int]:
-        return (0, 0) # Not implemented
+        return (0, 0, 0) # Not implemented
     def clear_stream_stats(self):
         return # Not implemented
     def init_thread (self):

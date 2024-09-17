@@ -61,7 +61,7 @@ class ESpiDevice(PhysicalDevice):
             return self.slave_request1.value
 
     def get_stream_stats(self):
-        return (self.tx_stat, self.rx_stat)
+        return (self.tx_stat, self.rx_stat, len(self.tx_queue))
     def clear_stream_stats(self):
         self.tx_stat = 0
         self.rx_stat = 0
