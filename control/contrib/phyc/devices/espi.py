@@ -100,6 +100,7 @@ class ESpiDevice(PhysicalDevice):
         while True:
             if len(self.tx_queue) < MIN_QSIZE:
                 self.tx_event.wait()
+                print(f"TX EVENT RECEIVED size={len(self.tx_queue)} time={time.time()}")
             if not self.running: break
 
             with self.gp_lock:
