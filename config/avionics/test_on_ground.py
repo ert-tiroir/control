@@ -40,5 +40,4 @@ CAMERA_AUTOSTART = False
 CAMERA_COMMAND   = [ "libcamera-vid", "-t", "0", "-o", "-"]
 CAMERA_MODE      = "WRITER"
 
-NEXT_ON_CONTROLLER_CHAIN = None
-NEXT_ON_MODEL_CHAIN      = send_to_netc()
+NEXT_ON_MODEL_CHAIN = send_to_netc()
