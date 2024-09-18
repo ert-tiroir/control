@@ -10,8 +10,8 @@ net = [
     ("/sensors/control/start", StartSensorPacket, start_sensors),
     ("/sensors/control/stop",  StopSensorPacket,  stop_sensors),
 
-    ("/sensors/model/event/start", OnStartSensors, model_send_and_flush()),
-    ("/sensors/model/event/start", OnEndSensors, model_send_and_flush()),
+    ("/sensors/model/event/start", OnStartSensors, model_send_and_flush),
+    ("/sensors/model/event/start", OnEndSensors, model_send_and_flush),
 ]
 
 print(OnStartSensors.__MultiField_meta_fields__)
