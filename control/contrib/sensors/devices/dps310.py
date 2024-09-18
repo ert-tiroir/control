@@ -24,7 +24,7 @@ class DPS310Device(AbstractDevice, metaclass=Singleton):
         return [ "temperature", "pressure" ]
     @staticmethod
     def get_custom_protocol() -> Tuple[str, MultiField, Callable[[MultiField], Any]]:
-        return ( "/sensors/data/dps310", DPS310Packet, handle_dps310_packet )
+        return ( "/sensors/model/data/dps310", DPS310Packet, handle_dps310_packet )
     def read_device_packet (self) -> "DPS310Packet":
         packet = DPS310Packet()
 
