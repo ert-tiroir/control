@@ -5,3 +5,4 @@ log*
 .coverage
 saves
 manifest.json
+!logger*

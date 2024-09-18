@@ -5,6 +5,7 @@ from control.config.manager import ConfigManager
 from control.contrib.protocol.fields.packet import MultiField
 from control.contrib.protocol.flush import Flushable
 from control.contrib.sensors.device import AbstractDevice
+from control.utils.logger import LogLevel
 
 
 class LazySettings ():
@@ -22,6 +23,8 @@ class LazySettings ():
     CAMERA_MODE      : Literal["WRITER"] | Literal["TRANSFER"]
 
     PHYSICAL_STATS_DELAY : float
+
+    MAX_LOG_LEVEL : LogLevel
 
     def __getattribute__(self, name: str) -> Any:
         return getattr(ConfigManager().get_config(), name)
