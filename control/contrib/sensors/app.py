@@ -2,9 +2,11 @@
 import threading
 import time
 from typing import List
+from control.contrib.protocol.abstract import model_send_and_flush
 from control.contrib.protocol.fields.packet import MultiField
 from control.contrib.sensors.csv import CSVDataSheets
 from control.contrib.sensors.device import AbstractDevice
+from control.contrib.sensors.protocol.model.events import OnEndSensors, OnStartSensors
 from control.core.app import Application
 
 from control.config import settings
@@ -26,6 +28,8 @@ class SensorsApp(Application):
             self.running = False
         
         self.closed  = False
+
+        self.packet_device = OnStartSensors()
     def init_application(self):
         next_devices = []
 
@@ -33,9 +37,13 @@ class SensorsApp(Application):
             if settings.SENSORS_MODE == "WRITER":
                 try:
                     device.init_device()
+
+                    setattr(self.packet_device, device.get_name(), 1)
                 except Exception as exception:
                     print("Device", device.get_name(), "failed to initialize")
                     print(exception)
+
+                    setattr(self.packet_device, device.get_name(), 0)
                     continue
             
             next_devices.append(device)
@@ -83,9 +91,15 @@ class SensorsApp(Application):
     def on_start (self, packet: MultiField):
         settings.NEXT_ON_CONTROLLER_CHAIN( packet )
         self.running = True
+
+        if settings.SENSORS_MODE == "WRITER":
+            model_send_and_flush(self.packet_device)
     def on_stop (self, packet: MultiField):
         settings.NEXT_ON_CONTROLLER_CHAIN( packet )
         self.running = False
+        
+        if settings.SENSORS_MODE == "WRITER":
+            model_send_and_flush(OnEndSensors())
     def on_data (self, device: AbstractDevice, data: MultiField):
         self.sheets.put_device(device, data)
 
