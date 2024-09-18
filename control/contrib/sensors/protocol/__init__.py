@@ -11,10 +11,9 @@ net = [
     ("/sensors/control/stop",  StopSensorPacket,  stop_sensors),
 
     ("/sensors/model/event/start", OnStartSensors, model_send_and_flush),
-    ("/sensors/model/event/start", OnEndSensors, model_send_and_flush),
+    ("/sensors/model/event/end", OnEndSensors, model_send_and_flush),
 ]
 
-print(OnStartSensors.__MultiField_meta_fields__)
 physical = net
 
 for device in settings.SENSORS_LIST:
