@@ -1,7 +1,5 @@
 
 from control.contrib.protocol.flush import send_to_void
-from control.utils.logger import LogLevel
-
 
 ENABLED_APPS = []
 
@@ -18,4 +16,4 @@ CAMERA_MODE      = "TRANSFER"
 
 PHYSICAL_STATS_DELAY = 5.0
 
-MAX_LOG_LEVEL = LogLevel.INFO
+MAX_LOG_LEVEL = (3, 'INFO')
