@@ -1,8 +1,11 @@
 
+from control.contrib.protocol.flush import send_to_void
+
+
 ENABLED_APPS = []
 
-NEXT_ON_CONTROLLER_CHAIN = lambda *args, **kwargs: 0
-NEXT_ON_MODEL_CHAIN      = lambda *args, **kwargs: 0
+NEXT_ON_CONTROLLER_CHAIN = send_to_void()
+NEXT_ON_MODEL_CHAIN      = send_to_void()
 
 SENSORS_AUTOSTART = False
 SENSORS_MODE = "TRANSFER"

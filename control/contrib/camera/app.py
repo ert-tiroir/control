@@ -2,7 +2,6 @@
 import threading
 from control.config import settings
 from control.contrib.camera.protocol.model.event import OnEndCamera, OnStartCamera
-from control.contrib.phyc.protocol import create_flush_packet
 from control.contrib.protocol.abstract import control_send_and_flush, model_send_and_flush
 from control.contrib.protocol.fields.packet import MultiField
 from control.core.app import Application

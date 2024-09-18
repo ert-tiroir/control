@@ -1,7 +1,10 @@
 
 from typing import Any
 
-class send_to_phyc:
+from control.contrib.phyc.protocol import create_flush_packet
+from control.contrib.protocol.flush import Flushable
+
+class send_to_phyc(Flushable):
     def __init__(self) -> None:
         self.app = None
     def __call__(self, packet) -> Any:
@@ -10,3 +13,5 @@ class send_to_phyc:
 
             self.app = PhysicalControllerApplication()
         self.app.send(packet)
+    def flush(self):
+        self( create_flush_packet() )

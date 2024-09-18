@@ -1,7 +1,9 @@
 
 from typing import Any
 
-class send_to_netc:
+from control.contrib.protocol.flush import Flushable
+
+class send_to_netc(Flushable):
     def __init__(self) -> None:
         self.app = None
     def __call__(self, packet) -> Any:
@@ -10,3 +12,5 @@ class send_to_netc:
 
             self.app = NetControllerApplication()
         self.app.send(packet)
+    def flush(self):
+        pass

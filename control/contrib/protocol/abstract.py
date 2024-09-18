@@ -101,7 +101,7 @@ class AbstractProtocolApp:
 
 def control_send_and_flush (packet):
     settings.NEXT_ON_CONTROLLER_CHAIN(packet)
-    settings.NEXT_ON_CONTROLLER_CHAIN( create_flush_packet() )
+    settings.NEXT_ON_CONTROLLER_CHAIN.flush()
 def model_send_and_flush (packet):
     settings.NEXT_ON_MODEL_CHAIN(packet)
-    settings.NEXT_ON_MODEL_CHAIN( create_flush_packet() )
+    settings.NEXT_ON_MODEL_CHAIN.flush()
