@@ -9,7 +9,7 @@ net = [
     ("/camera/control/start", StartCameraPacket, start_camera),
     ("/camera/control/stop",  StopCameraPacket,  stop_camera),
 
-    ("/camera/model/media", DataPacket, None) # Data packet can't be received on net, only on physical
+    ("/camera/model/media", DataPacket, None), # Data packet can't be received on net, only on physical
     ("/camera/model/event/start", OnStartCamera, None),
     ("/camera/model/event/end",   OnEndCamera,   None),
 ]
