@@ -30,6 +30,7 @@ class Logger:
 
         if self.file is not None:
             self.file.write(message)
+            self.file.flush()
     def __log_prepare (self, level: LogLevel, *args):
         message = f"[{level[1]}] {' '.join(list(map(str, args)))}\n"
 
