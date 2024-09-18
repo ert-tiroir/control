@@ -22,6 +22,7 @@ class NetControllerApplication (Application):
             while not self.closed:
                 try:
                     client, address = self.serversocket.accept()
+                    client.settimeout(0.1)
                 except socket.timeout:
                     continue
                 self.client = NetControllerSocket(client)
