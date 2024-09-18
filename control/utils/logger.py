@@ -26,7 +26,7 @@ class Logger:
     def __log (self, level: LogLevel, message: str):
         tier, name = level
 
-        if tier > settings.MAX_LOG_LEVEL: return
+        if tier > settings.MAX_LOG_LEVEL[0]: return
 
         if self.file is not None:
             self.file.write(message)
